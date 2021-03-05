@@ -1,0 +1,66 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class PlayerHealth : MonoBehaviour
+{
+    public float health;
+    public int numHearts;
+    private bool dead;
+
+    
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+     
+
+    void Update()
+    {   
+        if (dead == true)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < health)
+            {
+                hearts[i].sprite = fullHeart;
+            }
+            else
+            {
+                hearts[i].sprite = emptyHeart;
+            }
+
+            if (i < numHearts)
+            {
+                hearts[i].enabled = true;
+            }
+            else
+            {
+                hearts[i].enabled = false;
+            }
+            
+        }
+    }
+            void Damage(int d)
+            {
+                health -= d;
+                if(health < 1)
+                {
+                   dead = true;
+                }
+            }
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                Damage(1);
+            }
+
+            
+        }
+
+        
+       
+    }
